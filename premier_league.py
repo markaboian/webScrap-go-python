@@ -8,7 +8,6 @@ url = 'https://fbref.com/en/comps/9/Premier-League-Stats'
 response = requests.get(url)
 html_content = StringIO(response.text)
 df = pd.read_html(html_content, attrs={'id': 'results2023-202491_overall'})[0]
-df.insert(0, 'id', range(1, 1 + len(df)))
 df.to_csv('/Users/markaboian/Desktop/Go-Python/premier-league-table.csv')
 
 
@@ -22,9 +21,8 @@ connection.close()
 engine = create_engine('mysql+pymysql://root:mceastermako2002@localhost:3306/premier_league')
 metadata = MetaData()
 
-table = Table('table', metadata,
-              Column('id', Integer, primary_key=True),
-              Column('rk', Integer),
+table = Table('regular_season', metadata,
+              Column('rk', Integer, primary_key=True),
               Column('Squad', String(100)),
               Column('Matches_Played', Integer),
               Column('W', Integer),
@@ -49,4 +47,4 @@ table = Table('table', metadata,
 metadata.create_all(engine)
 
 df = pd.read_csv('premier-league-table.csv')
-df.to_sql('table', engine, if_exists='replace', index=False)
+df.to_sql('regular_season', engine, if_exists='replace', index=False)

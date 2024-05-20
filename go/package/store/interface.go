@@ -1,5 +1,7 @@
 package store
 
+import "go-python/internal/domain"
+
 type Interface interface {
-	GetTeamById(id int)
+	GetTeamByRank(rank int) (*domain.Team, error)
 }
